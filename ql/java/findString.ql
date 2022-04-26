@@ -7,9 +7,13 @@
 
 import java
 
-from Variable var,string text
-where var.getType() instanceof  TypeString and
+from Variable var, string text, string name, string location, string line
+where
+var.getType() instanceof  TypeString and
 text = var.getInitializer().toString() and
-text.length() >= 6
+text.length() >= 6 and
+name = var.getName().toString() and
+line = var.getInitializer().getLocation().getStartLine().toString() and
+location = var.getInitializer().getLocation().toString()
 
-select var.getName().toString(), var.getInitializer().toString(), var.getInitializer().getLocation().getStartLine(), var.getInitializer().getLocation().toString()
+select name, text, line, location

@@ -7,19 +7,23 @@
 
 import java
 
-from Variable var, string namestr, string contentstr
-where var.getType() instanceof  TypeString and
-	   namestr = var.getName().toLowerCase() and
-	   contentstr = var.getInitializer().toString().toLowerCase() and
-         contentstr.length() >= 6 and
-	(namestr.regexpMatch("\\w*password\\w*") or
-     namestr.regexpMatch("\\w*passwd\\w*") or
-      namestr.regexpMatch("\\w*pwd\\w*") or
-      namestr.regexpMatch("\\w*secret\\w*") or
-      namestr.regexpMatch("\\w*token\\w*") or
-      namestr.regexpMatch("\\w*auth\\w*") or
-            namestr.regexpMatch("\\w*security\\w*") or
-            namestr.regexpMatch("\\w*seed\\w*")
-	)
-
-select var.getName().toString(), var.getInitializer().toString(), var.getInitializer().getLocation().getStartLine(), var.getInitializer().getLocation()
+from Variable var, string text, string name, string namestr
+where
+var.getType() instanceof  TypeString and
+text = var.getInitializer().toString() and
+name = var.getName().toString() and
+namestr = text.toLowerCase() and
+text.length() >=6 and
+(namestr.regexpMatch("\\w*password\\w*") or
+namestr.regexpMatch("\\w*passwd\\w*") or
+namestr.regexpMatch("\\w*pwd\\w*") or
+namestr.regexpMatch("\\w*secret\\w*") or
+namestr.regexpMatch("\\w*token\\w*") or
+namestr.regexpMatch("\\w*auth\\w*") or
+namestr.regexpMatch("\\w*security\\w*") or
+namestr.regexpMatch("\\w*seed\\w*")
+)
+select var.getName().toString(),
+text,
+var.getInitializer().getLocation().getStartLine().toString(),
+var.getInitializer().getLocation().toString()

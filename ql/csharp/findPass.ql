@@ -7,9 +7,13 @@
 
 import csharp
 
-from AssignExpr assgin, string text, string namestr
-where text = assgin.getRValue().getValue().toString() and
-namestr = assgin.getLValue().(VariableAccess).getTarget().getName().toLowerCase() and
+
+from Variable var, string text, string name, string namestr
+where
+var.getType() instanceof  StringType and
+text = var.getInitializer().toString() and
+name = var.getName().toString() and
+namestr = text.toLowerCase() and
 text.length() >=6 and
 (namestr.regexpMatch("\\w*password\\w*") or
 namestr.regexpMatch("\\w*passwd\\w*") or
@@ -20,7 +24,7 @@ namestr.regexpMatch("\\w*auth\\w*") or
       namestr.regexpMatch("\\w*security\\w*") or
       namestr.regexpMatch("\\w*seed\\w*")
 )
-select assgin.getLValue().(VariableAccess).getTarget().getName(),
-assgin.getRValue().getValue(),
-assgin.getLValue().(VariableAccess).getTarget().getInitializer().getLocation().getStartLine(),
-assgin.getLValue().(VariableAccess).getTarget().getInitializer().getLocation()
+select var.getName().toString(),
+text,
+var.getInitializer().getLocation().getStartLine().toString(),
+var.getInitializer().getLocation().toString()

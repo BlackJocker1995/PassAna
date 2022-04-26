@@ -28,6 +28,7 @@ def draw_map(cf_matrix, label):
 
 if __name__ == '__main__':
     X = load_pkl('./dataset/nogan_test_data.pkl').reshape(-1)
+    raw_X = X
     Y = load_pkl('./dataset/nogan_test_label.pkl').reshape(-1)
 
     # pass_context = pd.read_csv('raw_dataset/mycontext_pass.csv')["context"]
@@ -52,10 +53,16 @@ if __name__ == '__main__':
     Y = Y.argmax(axis=1)
     y_pred = y_pred.argmax(axis=1)
 
+    index1 = Y == 1
+    index2 = y_pred == 0
+    out_index = index1 * index2
+
+    print(raw_X[out_index])
+
     matrix = confusion_matrix(Y, y_pred)
-    draw_map(matrix, ['Ordinary', 'Password'])
-    plt.show()
-    # print()
+    # draw_map(matrix, ['Ordinary', 'Password'])
+    # plt.show()
+    print(matrix)
 
     m = classification_report(Y, y_pred, digits=4)
     print(m)

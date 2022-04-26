@@ -1,4 +1,5 @@
 import pickle
+import time
 
 import pandas as pd
 import seaborn as sns
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     # Y = np.minimum(Y, np.ones(Y.shape))
 
     X = load_pkl('./dataset/nogan_test_data.pkl').reshape(-1)
+    raw_X = X
     Y = load_pkl('./dataset/nogan_test_label.pkl').reshape(-1)
 
     cnnContextClassifier = CNNClassifierGlove(padding_len=256)
@@ -39,15 +41,23 @@ if __name__ == '__main__':
     X, Y = cnnContextClassifier.words2vec(X, Y, fit=False)
     cnnContextClassifier.load_model('model/context/model_my.h5')
 
+    a = time.time()
     y_pred = cnnContextClassifier.model.predict(X)
+    b = time.time()
+    print(b-a)
 
     Y = Y.argmax(axis=1)
     y_pred = y_pred.argmax(axis=1)
 
+    index1 = Y == 1
+    index2 = y_pred == 0
+    out_index = index1 * index2
+
+    print(raw_X[out_index])
     matrix = confusion_matrix(Y, y_pred)
-    draw_map(matrix, ['Ordinary', 'Password'])
-    plt.show()
-    # print()
+    # draw_map(matrix, ['Ordinary', 'Password'])
+    # plt.show()
+    print(matrix)
 
     m = classification_report(Y, y_pred, digits=4)
     print(m)

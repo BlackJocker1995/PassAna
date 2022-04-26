@@ -50,13 +50,13 @@ def three_sigma_deduce(src):
     data.to_csv(src, index=False)
 
 
-def process_found_pass(src):
+def process_found_pass(src, name='pass'):
     """
     remove some str that are not password from pass.csv
     :param src:
     :return:
     """
-    data = pd.read_csv(f"{src}/pass.csv",
+    data = pd.read_csv(f"{src}/{name}.csv",
                        # on_bad_lines='skip',
                        index_col=0)
     # which has " "(space)
@@ -71,7 +71,7 @@ def process_found_pass(src):
     data = data.drop(columns='index')
     data = data.drop_duplicates()
     # save
-    data.to_csv(f"{src}/pass.csv")
+    data.to_csv(f"{src}/{name}.csv")
 
 
 def generate_random_pass(num):
@@ -121,19 +121,15 @@ def remove_pass_from_string(src):
 
 def merge_and_label():
     nopass_str = pd.read_csv('raw_dataset/nopass_str.csv')
-    randowm_pass = pd.read_csv('raw_dataset/random_pass.csv')# .sample(200000)#, chunksize=100000).get_chunk(100000)
-    user_pass = pd.read_csv('raw_dataset/password.csv').sample(1000000)#, chunksize=100000).get_chunk(100000)
-    tokens = pd.read_csv('raw_dataset/tokens.csv')# .sample(00000)#, chunksize=100000).get_chunk(100000)
+    randowm_pass = pd.read_csv('raw_dataset/random_pass.csv').sample(100000)#, chunksize=100000).get_chunk(100000)
+    user_pass = pd.read_csv('raw_dataset/password.csv').sample(100000)#, chunksize=100000).get_chunk(100000)
+    tokens = pd.read_csv('raw_dataset/tokens.csv').sample(200000)# .sample(00000)#, chunksize=100000).get_chunk(100000)
 
     data = []
     label = []
-    for i, p in enumerate([nopass_str, randowm_pass, user_pass, tokens]):
+    for i, p in zip([0, 1, 1, 2],[nopass_str, randowm_pass, user_pass, tokens]):
         p = p.dropna()
         p = p.to_numpy().reshape(-1).tolist()
-        # if i == 1:
-        #     label.extend(np.zeros(len(p), dtype=int))
-        # else:
-        #     label.extend(np.ones(len(p), dtype=int))
         label.extend(np.zeros(len(p), dtype=int) + i)
         data.extend(p)
     data = pd.DataFrame(data, dtype=str)

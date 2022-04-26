@@ -11,5 +11,4 @@ if __name__ == '__main__':
     src = "/home/rain/PassAna/csv"
     dirs = os.listdir(src)
     # list all dir
-
     remove_pass_from_string(f"{src}/csharp")

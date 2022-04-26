@@ -7,10 +7,13 @@
 
 import csharp
 
-from AssignExpr assgin, string text
-where text = assgin.getRValue().getValue().toString()  and
-text.length() >=6
-select assgin.getLValue().(VariableAccess).getTarget().getName(),
-assgin.getRValue().getValue(),
-assgin.getLValue().(VariableAccess).getTarget().getInitializer().getLocation().getStartLine(),
-assgin.getLValue().(VariableAccess).getTarget().getInitializer().getLocation()
+from Variable var, string text, string name, string location, string line
+where
+var.getType() instanceof  StringType and
+text = var.getInitializer().toString() and
+text.length() >= 6 and
+name = var.getName().toString() and
+line = var.getInitializer().getLocation().getStartLine().toString() and
+location = var.getInitializer().getLocation().toString()
+
+select name, text, line, location
