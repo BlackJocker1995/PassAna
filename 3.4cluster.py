@@ -74,7 +74,7 @@ if __name__ == '__main__':
     Y = X_new['label'].to_numpy()
     X_new = X_new[['x', 'y']].to_numpy()
 
-    for i, name in enumerate(["Ordinary String Context", "Credential Context", "GAN Generator Context"]):
+    for i, name in enumerate(["Ordinary Flow", "Credential Flow", "Complemented Credential Flow"]):
         index = (Y == i)
         plt.scatter(X_new[index, 0], X_new[index, 1],
                     marker='.', label=name, s=5)

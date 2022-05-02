@@ -4,16 +4,16 @@ import pandas as pd
 
 
 if __name__ == '__main__':
-    language = 'javascript'
-    base = '/media/rain/data/other/js'
-    for str_label in ['string_test']:
+    language = 'csharp'
+    base = '/media/rain/data/csharp_zip'
+    for str_label in ['pass']:
         analyzer = init_analyzer(language)
 
         if "string" in str_label:
-            analyzer.get_context_for_strs(base, f'csv/{language}/{str_label}.csv', skip=True)
+            analyzer.get_context_for_strs(base, f'csv/{language}/{str_label}.csv', skip=False)
             context_to = analyzer.merge_csv(base, 'context_str')
         else:
-            analyzer.get_context_for_passs(base, f'csv/{language}/{str_label}.csv', skip=True)
+            analyzer.get_context_for_passs(base, f'csv/{language}/{str_label}.csv', skip=False)
             context_to = analyzer.merge_csv(base, 'context_pass')
         context_to = context_to.drop(columns="project")
         source = pd.read_csv(f'csv/{language}/{str_label}.csv', index_col=0)

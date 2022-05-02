@@ -14,7 +14,7 @@ def first_model(X):
     passFinderPassClassifier = PassFinderPassClassifier(padding_len=128, class_num=4)
 
     X, _ = passFinderPassClassifier.words2vec(X, fit=False)
-    passFinderPassClassifier.load_model('model/pass/model_passfinder_4.h5')
+    passFinderPassClassifier.load_model('model/pass/model_passfinder_3.h5')
 
     y_pred = passFinderPassClassifier.model.predict(X)
 

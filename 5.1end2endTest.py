@@ -13,7 +13,7 @@ def first_model(X):
     X = X['str'].to_numpy().reshape(-1)
     ngramPwdClassifier = NgramPwdClassifier(padding_len=512, class_num=4)
     X, _ = ngramPwdClassifier.words2vec(X, n=3, fit=False)
-    ngramPwdClassifier.load_model('model/pass/model_my_glove_4.h5')
+    ngramPwdClassifier.load_model('model/pass/model_my_glove_3.h5')
 
     y_pred = ngramPwdClassifier.model.predict(X)
     return y_pred

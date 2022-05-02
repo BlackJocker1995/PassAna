@@ -17,7 +17,7 @@ def pwdNgram():
     X, Y = ngramPwdClassifier.words2vec(X, Y, n=3, fit=False)
     # X, X_t, Y, Y_t = train_test_split(X, Y, stratify=Y, test_size=0.2)
 
-    ngramPwdClassifier.get_matrix_6b(f"/home/rain/glove")
+    # ngramPwdClassifier.get_matrix_6b(f"/home/rain/glove")
 
     # test_data = [X_t, np.array(Y_t, dtype=int)]
 

@@ -17,7 +17,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 
 class RemoteAnalyzer(object):
-    def __init__(self, bearer='940af9ba7bd1e65d943a80bf40ab6b25808e715cfdf314cb8dc14c561567ff81'):
+    def __init__(self, bearer=''):
         self.bearer = bearer
 
     def get_download(self, project_id, language, file_path, threshold=None):
@@ -71,6 +71,22 @@ class RemoteAnalyzer(object):
             conn.close()
 
         return data['id']
+
+    def get_project_language(self, project):
+        try:
+            headers = {
+                "Accept": "application/json",
+                "Authorization": f"Bearer {self.bearer}"}
+            conn = http.client.HTTPSConnection("lgtm.com")
+            conn.request('GET', f'/api/v1.0/projects/g/{project}', headers=headers)
+            response = conn.getresponse()
+            data = json.loads(response.read().decode('utf-8'))
+            conn.close()
+        except Exception as e:
+            pass
+            conn.close()
+
+        return data['languages']
 
     def download_dataset(self, filename: str, language, path: str, threshold=None):
         name = filename.split('/')[1]

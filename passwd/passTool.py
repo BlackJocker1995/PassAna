@@ -91,7 +91,7 @@ def generate_random_pass(num):
 def generate_random_token(num):
     tokens = []
     tmp_char = " ".join(string.ascii_letters + string.digits).split(' ')
-    for count in range(16, 64, 2):
+    for count in range(32, 64, 2):
         for i in range(num):
             tmp = np.random.choice(tmp_char, size=count, replace=True)
             token = ''.join(tmp)
@@ -123,7 +123,8 @@ def merge_and_label():
     nopass_str = pd.read_csv('raw_dataset/nopass_str.csv')
     randowm_pass = pd.read_csv('raw_dataset/random_pass.csv').sample(100000)#, chunksize=100000).get_chunk(100000)
     user_pass = pd.read_csv('raw_dataset/password.csv').sample(100000)#, chunksize=100000).get_chunk(100000)
-    tokens = pd.read_csv('raw_dataset/tokens.csv').sample(200000)# .sample(00000)#, chunksize=100000).get_chunk(100000)
+    tokens = pd.read_csv('raw_dataset/tokens.csv')#.sample(300000)# .sample(00000)#, chunksize=100000).get_chunk(100000)
+
 
     data = []
     label = []

@@ -39,7 +39,7 @@ class Analyzer(object):
         :param cmd:
         :return:
         """
-        if cmd not in ['context_pass', 'context_str', 'findString', 'findPass']:
+        if cmd not in ['context_pass', 'context_str', 'findString', 'findPass', 'hardcode']:
             logging.error(f'Not support {cmd}!')
             return
         self.cmd = cmd
@@ -97,7 +97,7 @@ class Analyzer(object):
 
         # background running
         try:
-            self._ql_task = pexpect.spawn(cmd, timeout=180)
+            self._ql_task = pexpect.spawn(cmd, timeout=240)
             while True:
                 if not self._ql_task.isalive():
                     logging.info(f"Timeout")
@@ -236,6 +236,25 @@ class Analyzer(object):
             if result:
                 self.decode_bqrs2csv(f'{base_path}/{proj_dir}')
 
+    def get_hardcode_from_projects(self, base_path, skip=False, threads=8):
+        """
+        run ql for all dataset to find passsword
+        :param base_path: dir path
+        :param skip: skip if the dataset had been analyzed
+        :param threads:
+        :return: None
+        """
+        self.set_cmd("hardcode")
+        dirs = tqdm(os.listdir(base_path))
+
+        for proj_dir in dirs:
+            dirs.set_description(f"Processing: {proj_dir.ljust(50, ' ')}")
+            # run the ql command
+            result = self.run_ql_cmd(f'{base_path}/{proj_dir}', skip=skip, threads=threads)
+            # if succeed, decode the bqrs file
+            if result:
+                self.decode_bqrs2csv(f'{base_path}/{proj_dir}')
+
     def decode_bqrs_all(self, base_path, cmd):
         """
         decode all bqrs in $base_path$
@@ -268,6 +287,8 @@ class Analyzer(object):
             data = Analyzer.load_project_csv(f'{base_path}/{proj_dir}', cmd)
             if self.cmd in ["findPass", "findString"]:
                 data.columns = ["var", 'str', 'line', 'location']
+            if self.cmd in ["hardcode"]:
+                data.columns = ["str", 'location']
             if self.cmd in ["context_str", "context_pass"]:
                 try:
                     data.columns = ["var", 'location', 'context']

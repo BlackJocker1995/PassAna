@@ -107,7 +107,7 @@ class PassFinderPassClassifier(PwdClassifier):
         texts = self._tokenizer_words(texts)
 
         # padding the cols to padding_len
-        texts = sequence.pad_sequences(texts, maxlen=self.padding_len)
+        texts = sequence.pad_sequences(texts, maxlen=self.padding_len, padding='post', truncating='post')
         # trans label to label type
         if labels is not None:
             labels = to_categorical(labels)

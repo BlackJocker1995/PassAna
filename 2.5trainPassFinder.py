@@ -15,7 +15,7 @@ if __name__ == '__main__':
     X = load_pkl('./dataset/pwd_train_data.pkl').reshape(-1)
     Y = load_pkl('./dataset/pwd_train_label.pkl').reshape(-1)
 
-    passFinderClassifier = PassFinderPassClassifier(padding_len=128, class_num=4)
+    passFinderClassifier = PassFinderPassClassifier(padding_len=128, class_num=3)
 
     X, Y = passFinderClassifier.words2vec(X, Y, fit=True)
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
 
     passFinderClassifier.create_model()
     passFinderClassifier.run(train_data, valid_data, epochs=50, batch_size=256)
-    passFinderClassifier.save_model('model/pass/model_passfinder_4.h5')
+    passFinderClassifier.save_model('model/pass/model_passfinder_3.h5')

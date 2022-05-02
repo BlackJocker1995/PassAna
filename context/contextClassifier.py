@@ -104,7 +104,7 @@ class ContextClassifier:
         # integer encode the documents
         encoded_docs = self.tokenizer.texts_to_sequences(texts)
         # pad documents to a max length of padding_len words
-        texts = pad_sequences(encoded_docs, maxlen=self.padding_len)
+        texts = pad_sequences(encoded_docs, maxlen=self.padding_len, padding='post', truncating='post')
         # trans label to label type
         if labels is not None:
             labels = to_categorical(labels)
@@ -115,7 +115,7 @@ class ContextClassifier:
         # integer encode the documents
         encoded_docs = self.tokenizer.texts_to_sequences(texts)
         # pad documents to a max length of 128 words
-        texts = pad_sequences(encoded_docs, maxlen=self.padding_len)
+        texts = pad_sequences(encoded_docs, maxlen=self.padding_len, padding='post', truncating='post')
 
         return texts
 
@@ -310,10 +310,10 @@ class GAN(ContextClassifier):
 
     def build_discriminator(self):
         model = Sequential()
-        model.add(Conv1D(16, 9, padding="same", input_shape=(self.padding_len, 1)))
-        model.add(Conv1D(8, 9, padding='same'))
+        model.add(Conv1D(32, 9, padding="same", input_shape=(self.padding_len, 1)))
+        model.add(Conv1D(16, 9, padding='same'))
         model.add(MaxPooling1D(3, 3, padding='same'))
-        model.add(Conv1D(4, 9, padding='same'))
+        model.add(Conv1D(8, 9, padding='same'))
         model.add(MaxPooling1D(3, 3, padding='same'))
         model.add(Conv1D(2, 9, padding='same'))
         model.add(Flatten())

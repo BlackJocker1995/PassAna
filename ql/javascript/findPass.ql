@@ -16,8 +16,9 @@ namestr.regexpMatch("\\w*pwd\\w*") or
 namestr.regexpMatch("\\w*secret\\w*") or
 namestr.regexpMatch("\\w*token\\w*") or
 namestr.regexpMatch("\\w*auth\\w*") or
-      namestr.regexpMatch("\\w*security\\w*") or
-      namestr.regexpMatch("\\w*seed\\w*")
+namestr.regexpMatch("\\w*security\\w*") or
+namestr.regexpMatch("\\w*seed\\w*") or
+namestr.regexpMatch("\\w*key\\w*")
 )
 
 select namestr , contentstr, assign.getLocation().getStartLine(), assign.getLocation()

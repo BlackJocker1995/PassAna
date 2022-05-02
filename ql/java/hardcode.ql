@@ -57,5 +57,4 @@
  from
    DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialApiCallConfiguration conf
  where conf.hasFlowPath(source, sink)
- select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
-   "sensitive API call"
+ select source.toString(), source.getNode().getLocation().toString()

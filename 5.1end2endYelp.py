@@ -78,9 +78,12 @@ def str_match_yelp(str_name):
 
 def str_match_my(str_name):
     try:
-        out = re.findall('.*opt/src/(.*\.\w+)', str_name)[0]
+        out = re.findall('.*opt/src/(.*\.\w+)', str_name)
+        if len(out) == 0:
+            out = re.findall('.*opt/(.*\.\w+)', str_name)
+        out = out[0]
     except:
-        out = re.findall('.*opt/(.*\.\w+)', str_name)[0]
+        out = str_name
     return out
 
 
@@ -102,10 +105,9 @@ def process_label():
     merge['yelp_label'].astype(int)
     merge['raw_label'].astype(int)
 
-
     merge.to_csv('e2e/yelper.csv', index=False)
 
 if __name__ == '__main__':
-    # check_files("/media/rain/data/test")
-    # process_csv()
+    check_files("/media/rain/data/test/")
+    process_csv()
     process_label()

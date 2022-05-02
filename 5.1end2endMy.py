@@ -9,15 +9,22 @@ import pandas as pd
 import numpy as np
 
 
-def first_model(X):
-    X = X['str'].to_numpy().reshape(-1)
-    ngramPwdClassifier = NgramPwdClassifier(padding_len=512, class_num=4)
+def wtestX(X):
+    ngramPwdClassifier = NgramPwdClassifier(padding_len=512, class_num=3, glove_dim=100)
     X, _ = ngramPwdClassifier.words2vec(X, n=3, fit=False)
-    ngramPwdClassifier.load_model('model/pass/model_my_glove_4.h5')
+    ngramPwdClassifier.load_model('model/pass/model_my_glove_3.h5')
 
     y_pred = ngramPwdClassifier.model.predict(X)
     return y_pred
 
+def first_model(X):
+    X = X['str'].to_numpy().reshape(-1)
+    ngramPwdClassifier = NgramPwdClassifier(padding_len=512, class_num=3)
+    X, _ = ngramPwdClassifier.words2vec(X, n=3, fit=False)
+    ngramPwdClassifier.load_model('model/pass/model_my_glove_3.h5')
+
+    y_pred = ngramPwdClassifier.model.predict(X)
+    return y_pred
 
 def second_model(X):
     X = X['context'].to_numpy().reshape(-1)
@@ -30,15 +37,12 @@ def second_model(X):
 
     return y_pred
 
-
-
-
 def draw_map(cf_matrix, label):
     ax = sns.heatmap(cf_matrix/np.sum(cf_matrix), annot=True,
                      fmt='.2%', cmap='Blues')
 
     ax.set_xlabel('Predicted Label',fontsize=16)
-    ax.set_ylabel('True Label',fontsize=16)
+    ax.set_ylabel('True Label', fontsize=16)
 
     ## Ticket labels - List must be in alphabetical order
     ax.xaxis.set_ticklabels(label)
@@ -57,7 +61,7 @@ def create():
     ordinary_finder = ordinary_finder[ordinary_finder['line'].str.isdecimal()]
     ordinary_finder['line'] = ordinary_finder['line'].astype(int, errors='ignore')
 
-    credential = pd.merge(credential_my, credential_finder, on=['var', 'str', 'location', 'line', 'project'])
+    credential = pd.merge(credential_my, credential_finder, on=['var', 'str', 'location', 'line', 'project']).sample(200)
     ordinary = pd.merge(ordinary_my, ordinary_finder, on=['var', 'str', 'location', 'line', 'project']).sample(500)
     X = pd.concat([credential, ordinary])
     Y = np.r_[np.ones(credential.shape[0]), np.zeros(ordinary.shape[0])]
@@ -78,4 +82,7 @@ if __name__ == '__main__':
     X['first'] = first_mark
     X['second'] = second_mark
     X.to_csv('e2e/checker.csv', index=False)
+
+    # first_mark = wtestX(['e5c9ee274ae87bc031adda32e27fa98b9290da83']).argmax(axis=1)
+    # print(first_mark)
 

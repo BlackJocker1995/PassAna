@@ -10,27 +10,22 @@ import semmle.code.cpp.dataflow.DataFlow
 
 
 
-from Variable var, FunctionCall call, string str, string context
-where str = var.getName() + var.getInitializer().getLocation().toString() and
+from VariableAccess var, VariableAccess other, FunctionCall call, Function fun, string str, string context
+where str = var.getTarget().getName() + var.getTarget().getInitializer().getLocation().toString() and
 str in
-["privreqfile:///opt/src/nping/NpingOps.cc:2296:22:2296:39"]
+["ntru_pkey_16file:///opt/src/test_falcon.c:255:35:255:94"]
 and
 (
-    // (
-    //     DataFlow::localFlow(DataFlow::exprNode(var.getInitializer().getExpr()), DataFlow::exprNode(other.getInitializer().getExpr())) and
-    //     context = other.getName()
-    // ) or
+//    (
+//        DataFlow::localFlow(DataFlow::exprNode(var), DataFlow::exprNode(other)) and
+//        context = other.getTarget().getName().toString()
+//    ) or
     (
-        DataFlow::localFlow(DataFlow::exprNode(var.getInitializer().getExpr()), DataFlow::exprNode(call.getAnArgument())) and
-        context = call.getNameQualifier().toString()
+        DataFlow::localFlow(DataFlow::exprNode(var), DataFlow::exprNode(call.getAnArgument())) and
+        fun = call.getTarget() and
+        context = fun.getName()
     )
 
 )
-select var.getName(), var.getInitializer().getLocation(), context
 
-
-// from FunctionCall call, Variable var
-// where
-// call.getTarget().getName().toString().regexpMatch("nping.*") and
-// call.getAnArgument().getValue() = var.getInitializer().getExpr().getValue()
-// select call, var, call.getAnArgument()
+select var.getTarget().getName(), var.getTarget().getInitializer().getLocation(), context

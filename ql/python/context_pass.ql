@@ -13,7 +13,7 @@ import semmle.python.dataflow.new.DataFlow
 from Name var, string str, string context, DataFlow::MethodCallNode method
 where str = var.getId() + var.getLocation().toString() and
 str in
-["EMAIL_PASSWORD/opt/src/sendEmail/EMailClient.py:15"]
+["SECRET_KEY/opt/src/setting.py:6", "AppSecret/opt/src/setting.py:13"]
 and
 (
     (

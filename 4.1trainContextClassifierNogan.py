@@ -9,7 +9,7 @@ if __name__ == '__main__':
     X = load_pkl('./dataset/nogan_train_data.pkl').reshape(-1)
     Y = load_pkl('./dataset/nogan_train_label.pkl').reshape(-1)
 
-    cnnContextClassifier = CNNClassifierGlove(padding_len=512, glove_dim=100)
+    cnnContextClassifier = CNNClassifierGlove(padding_len=256, glove_dim=100)
 
     X, Y = cnnContextClassifier.words2vec(X, Y, fit=False)
 

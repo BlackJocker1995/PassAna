@@ -21,7 +21,8 @@ namestr = n.getId().toString().toLowerCase() and
       namestr.regexpMatch("\\w*token\\w*") or
       namestr.regexpMatch("\\w*auth\\w*") or
       namestr.regexpMatch("\\w*security\\w*") or
-      namestr.regexpMatch("\\w*seed\\w*")
+      namestr.regexpMatch("\\w*seed\\w*") or
+      namestr.regexpMatch("\\w*key\\w*")
 ) and
 s.getText().length() > 5 and
 s.getText().length() <= 256 and

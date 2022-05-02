@@ -12,6 +12,7 @@ from keras.models import Sequential, load_model
 from keras.preprocessing import sequence
 from keras.utils.np_utils import to_categorical
 from keras_preprocessing.sequence import pad_sequences
+from sklearn.utils import compute_class_weight
 from tqdm import tqdm
 import pandas as pd
 from tokenizer.tool import MyTokenizer, train_valid_split, load_embedding
@@ -40,15 +41,25 @@ class PwdClassifier:
     def create_model(self):
         pass
 
-    def run(self, train, valid, epochs, batch_size):
+    def run(self, train, valid, epochs, batch_size, imbalance):
         if self.model is None:
             logging.error('Model is None')
             raise ValueError('Create model at first!')
+
+        if imbalance:
+            tmp_y = np.argmax(train[1], axis=1)
+            weights = compute_class_weight(class_weight='balanced', classes=[0, 1], y=tmp_y)
+            self.model.fit(train[0], train[1],
+                           epochs=epochs, batch_size=batch_size,
+                           validation_data=(valid[0], valid[1]),
+                           class_weight={0: weights[0], 1: weights[1]},
+                           shuffle=True)
+        else:
+            self.model.fit(train[0], train[1],
+                           epochs=epochs, batch_size=batch_size,
+                           validation_data=(valid[0], valid[1]),
+                           shuffle=True)
         print(f"X: {train[0].shape} Y:{train[1].shape}")
-        self.model.fit(train[0], train[1],
-                       epochs=epochs, batch_size=batch_size,
-                       validation_data=(valid[0], valid[1]),
-                       shuffle=True)
 
     def save_model(self, src):
         self.model.save(f"{src}")
@@ -247,15 +258,12 @@ class NgramPwdClassifier(PwdClassifier):
         self.embedding_matrix = None
 
     def create_model(self):
-        if self.embedding_matrix is None:
-            logging.warning("Get glove 6B matrix at first")
-            raise ValueError("Get glove 6B matrix at first")
 
         logging.info("Create Model...")
         model = Sequential()
-        model.add(Embedding(self.tokenizer.vocab_size(), self.glove_dim,
-                            weights=[self.embedding_matrix], input_length=self.padding_len, trainable=False))
-        # model.add(Conv1D(64, 32, activation='relu', padding="same", input_shape=(self.padding_len, 1)))
+        # model.add(Embedding(self.tokenizer.vocab_size(), self.glove_dim,
+        #                     weights=[self.embedding_matrix], input_length=self.padding_len, trainable=False))
+        model.add(Conv1D(64, 16, activation='relu', padding="same", input_shape=(self.padding_len, 1)))
         model.add(Dense(64, activation='relu'))
         model.add(Conv1D(32, 16, activation='relu', padding="same"))
         model.add(Dense(64, activation='relu'))
@@ -305,7 +313,7 @@ class NgramPwdClassifier(PwdClassifier):
         # integer encode the documents
         encoded_docs = self.tokenizer.texts_to_sequences(texts)
         # pad documents to a max length of 4 words
-        texts = pad_sequences(encoded_docs, maxlen=self.padding_len)
+        texts = pad_sequences(encoded_docs, maxlen=self.padding_len, padding='post', truncating='post')
         # trans label to label type
         if labels is not None:
             labels = to_categorical(labels)

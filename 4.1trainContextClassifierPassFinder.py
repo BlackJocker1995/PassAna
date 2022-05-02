@@ -20,6 +20,6 @@ if __name__ == '__main__':
     train_data, valid_data = [X, np.array(Y, dtype=int)], [X_t, np.array(Y_t, dtype=int)]
 
     passFinderClassifier.create_model()
-    passFinderClassifier.run(train_data, valid_data, epochs=50, batch_size=256)
+    passFinderClassifier.run(train_data, valid_data, epochs=30, batch_size=256, imbalance=True)
 
     passFinderClassifier.save_model('model/context/model_passfinder.h5')

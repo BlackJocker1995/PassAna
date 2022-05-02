@@ -20,7 +20,8 @@ namestr = var.getName() and
       namestr.regexpMatch("\\w*token\\w*") or
       namestr.regexpMatch("\\w*auth\\w*") or
       namestr.regexpMatch("\\w*security\\w*") or
-      namestr.regexpMatch("\\w*seed\\w*")
+      namestr.regexpMatch("\\w*seed\\w*") or
+      namestr.regexpMatch("\\w*key\\w*")
 )
 
 select var.getName().toString(), var.getInitializer().getExpr().getValue(),

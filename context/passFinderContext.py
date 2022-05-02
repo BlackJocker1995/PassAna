@@ -5,7 +5,7 @@ import re
 
 import zipfile
 from keras.layers import Dense, GlobalAveragePooling1D, Flatten, Conv2D, Conv1D, MaxPooling1D, GlobalMaxPooling1D, \
-    Dropout
+    Dropout, Embedding
 from keras.models import Sequential
 from keras.preprocessing import sequence
 from keras.utils.np_utils import to_categorical
@@ -20,7 +20,7 @@ MAX_NB_WORDS = 100000
 
 
 class PassFinderContextClassifier(PwdClassifier):
-    def __init__(self, padding_len, embedding_dim=50, debug=False):
+    def __init__(self, padding_len, embedding_dim=100, debug=False):
         super(PassFinderContextClassifier, self).__init__(padding_len, debug)
         self.embedding_dim = embedding_dim
 
@@ -31,11 +31,13 @@ class PassFinderContextClassifier(PwdClassifier):
         """
         logging.info("Create Model...")
         model = Sequential()
-        model.add(Conv1D(32, 16, activation='relu', padding="same", input_shape=(self.padding_len, 1)))
+        # model.add(Embedding(self.tokenizer.vocab_size() + 1, self.embedding_dim, input_shape=(self.padding_len, 1)))
+        model.add(Conv1D(16, 9, activation='relu', padding="same",input_shape=(self.padding_len, 1)))
+        # model.add(Conv1D(32, 16, activation='relu', padding="same"))
         model.add(Dense(64, activation='relu'))
-        model.add(Conv1D(16, 16, activation='relu', padding="same"))
+        model.add(Conv1D(8, 9, activation='relu', padding="same"))
         model.add(Dense(64, activation='relu'))
-        model.add(Conv1D(8, 8, activation='relu', padding="same"))
+        model.add(Conv1D(4, 9, activation='relu', padding="same"))
         model.add(Flatten())
         model.add(Dense(2, activation='softmax'))
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=["acc"])
@@ -102,7 +104,7 @@ class PassFinderContextClassifier(PwdClassifier):
         texts = self._tokenizer_words(texts)
 
         # padding the cols to padding_len
-        texts = sequence.pad_sequences(texts, maxlen=self.padding_len)
+        texts = sequence.pad_sequences(texts, maxlen=self.padding_len, padding='post', truncating='post')
         # trans label to label type
         if labels is not None:
             labels = to_categorical(labels)
@@ -118,7 +120,10 @@ def merge_passfinder_context(src, passorstr):
     for proj_dir in dirs:
         if not os.path.exists(f'{src}/{proj_dir}/passFindercontext_{passorstr}.csv'):
             continue
-        data = pd.read_csv(f'{src}/{proj_dir}/passFindercontext_{passorstr}.csv', index_col=0)
+        try:
+            data = pd.read_csv(f'{src}/{proj_dir}/passFindercontext_{passorstr}.csv', index_col=0,encoding = "ISO-8859-1")
+        except Exception as e:
+            print(e)
         data = _process_text(data)
         merge_out = pd.concat([merge_out, data])
     return merge_out

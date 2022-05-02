@@ -23,7 +23,7 @@ def generator(num, train=True):
 
         gan = GAN(padding_len=padding_len)
 
-        gan.words2vec_tokenizer(merge_context, fit=True)
+        gan.words2vec_tokenizer(pass_context, fit=True)
 
         # to vector
         pass_context = gan.words2vec_text(pass_context)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     gen_pass_context = generator(5000, True)
     gen_pass_context = pd.DataFrame(gen_pass_context, columns=['context'])
     gen_pass_context = gen_pass_context.dropna()
-    gen_pass_context.to_csv('raw_dataset/mycontext_pass_gen_1.csv', index=False)
+    gen_pass_context.to_csv('raw_dataset/mycontext_pass_gen.csv', index=False)
 
-    gen_pass_context = pd.read_csv('raw_dataset/mycontext_pass_gen_1.csv').dropna()
-    gen_pass_context.to_csv('raw_dataset/mycontext_pass_gen_1.csv', index=False)
+    gen_pass_context = pd.read_csv('raw_dataset/mycontext_pass_gen.csv').dropna()
+    gen_pass_context.to_csv('raw_dataset/mycontext_pass_gen.csv', index=False)
