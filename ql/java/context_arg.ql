@@ -15,19 +15,25 @@ import semmle.code.java.security.Encryption
 
 
 from Argument arg, MethodAccess call, VarAccess other, string str, string context
-where str = arg.toString() + var.getLocation().toString() and
+where str = arg.toString() + arg.getLocation().toString() and
 str in
 ["COMPRESSED_FILENAMEfile:///opt/src/src/main/java/com/github/ayltai/gradle/plugin/DownloadTask.java:47:55:47:84"]
 and
 (
-    (
-        TaintTracking::localTaint(DataFlow::exprNode(var), DataFlow::exprNode(other)) and
-        context = other.getVariable().getName()
-    ) or
-    (
-        TaintTracking::localTaint(DataFlow::exprNode(var), DataFlow::exprNode(call.getAnArgument())) and
-        context = call.getMethod().getQualifiedName()
-    )
+     (
+           TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(other)) and
+           context = other.getVariable().getName()
+       ) or
+       (
+           TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(method_call.getAnArgument())) and
+           (
+           context = method_call.getQualifier().toString() + ";" + method_call.getMethod().getQualifiedName() or
+           context =  method_call.getMethod().getQualifiedName() + ";" +method_call.getAnArgument().toString()
+       ) or
+       (
+               TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(call.getAnArgument())) and
+               context =  method_call.getAnArgument().toString()
+       )
 
 )
 select arg.toString(), arg.getLocation(), context

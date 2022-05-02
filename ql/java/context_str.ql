@@ -26,12 +26,16 @@ and
     ) or
     (
         TaintTracking::localTaint(DataFlow::exprNode(var), DataFlow::exprNode(method_call.getAnArgument())) and
-        context = method_call.getQualifier().toString() + ";" + method_call.getMethod().getQualifiedName() + ";" +method_call.getAnArgument().toString()
+        context = method_call.getQualifier().toString()
     ) or
     (
-        TaintTracking::localTaint(DataFlow::exprNode(var), DataFlow::exprNode(call.getAnArgument())) and
-        context =  method_call.getMethod().getQualifiedName() + ";" +method_call.getAnArgument().toString()
-    ) 
+            TaintTracking::localTaint(DataFlow::exprNode(var), DataFlow::exprNode(call.getAnArgument())) and
+            context =  call.getAnArgument().toString()
+    )or
+    (
+            TaintTracking::localTaint(DataFlow::exprNode(var), DataFlow::exprNode(call.getAnArgument())) and
+            context =  call.getMethod().getQualifiedName()
+    )
 
 )
 select var.getVariable().getName(), var.getVariable().getInitializer().getLocation(), context
