@@ -21,19 +21,21 @@ str in
 and
 (
      (
-           TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(other)) and
-           context = other.getVariable().getName()
-       ) or
-       (
-           TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(method_call.getAnArgument())) and
-           (
-           context = method_call.getQualifier().toString() + ";" + method_call.getMethod().getQualifiedName() or
-           context =  method_call.getMethod().getQualifiedName() + ";" +method_call.getAnArgument().toString()
-       ) or
-       (
-               TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(call.getAnArgument())) and
-               context =  method_call.getAnArgument().toString()
-       )
+             TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(other)) and
+             context = other.getVariable().getName()
+         ) or
+         (
+             TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(method_call.getAnArgument())) and
+             context = method_call.getQualifier().toString()
+         ) or
+         (
+                 TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(call.getAnArgument())) and
+                 context =  call.getAnArgument().toString()
+         )or
+         (
+                 TaintTracking::localTaint(DataFlow::exprNode(arg), DataFlow::exprNode(call.getAnArgument())) and
+                 context =  call.getMethod().getQualifiedName()
+         )
 
 )
 select arg.toString(), arg.getLocation(), context
