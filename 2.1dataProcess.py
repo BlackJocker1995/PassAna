@@ -1,11 +1,33 @@
 import os
+
 import pandas as pd
 
-from passwd.passTool import three_sigma_deduce
+from passwd.passTool import remove_pass_from_string, generate_random_pass, three_sigma_deduce, generate_random_token
 
-if __name__ == '__main__':
+
+def removePassFromStr():
     """
-    合并生成常规的str，即不包含password 的纯粹的str, 且进行简单的数据处理
+    remove password data from string dataset
+    """
+    src = "/home/rain/PassAna/csv"
+    dirs = os.listdir(src)
+    # list all dir
+    remove_pass_from_string(f"{src}/csharp")
+
+
+def generateRandomPass():
+    """
+    generate random password
+    :return:
+    """
+    generate_random_pass(1000000)
+    three_sigma_deduce("raw_dataset/random_pass.csv")
+
+
+def generateOrdinary():
+    """
+    generate ordinary dataset from analyzed projects
+    :return:
     """
     src = "/home/rain/PassAna/csv"
     dirs = os.listdir(src)
@@ -29,3 +51,12 @@ if __name__ == '__main__':
     init_data.to_csv("raw_dataset/nopass_str.csv", index=False)
 
     three_sigma_deduce("raw_dataset/nopass_str.csv")
+
+
+def generateToken():
+    """
+    generate token password
+    :return:
+    """
+    generate_random_token(100000)
+    three_sigma_deduce("raw_dataset/tokens.csv")

@@ -1,14 +1,25 @@
+import pickle
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+from context.contextClassifier import CNNClassifierGlove
+from context.passFinderContext import extract_context_passfinder_all
+from tokenizer.tool import load_pkl
+
 from context.contextTool import split_context_csv_by_project
 from ql.analyzer import init_analyzer
 import pandas as pd
 
 
-if __name__ == '__main__':
+def anaFlowContext():
+    """
+    Our flow context
+    :return:
+    """
     language = 'csharp'
     base = '/media/rain/data/csharp_zip'
-    for str_label in ['pass']:
+    for str_label in ['pass', 'string']:
         analyzer = init_analyzer(language)
-
         if "string" in str_label:
             analyzer.get_context_for_strs(base, f'csv/{language}/{str_label}.csv', skip=False)
             context_to = analyzer.merge_csv(base, 'context_str')
@@ -26,4 +37,26 @@ if __name__ == '__main__':
             out.to_csv(f'csv/{language}/mycontext_{str_label}.csv')
         else:
             out.to_csv(f'csv/{language}/mycontext_{str_label}.csv')
+
+
+def anaFinderContext():
+    """
+    passFinder Context
+    :return:
+    """
+    language = 'csharp'
+    base = '/media/rain/data/csharp_zip'
+    extract_context_passfinder_all(
+        base,
+        language,
+        "pass"
+    )
+    extract_context_passfinder_all(
+        base,
+        language,
+        "string"
+    )
+
+if __name__ == '__main__':
+    anaFlowContext()
 

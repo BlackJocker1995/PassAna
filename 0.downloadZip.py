@@ -2,6 +2,9 @@ import time
 
 from ql.remoteAnalyzer import RemoteAnalyzer
 
+"""
+download CodeQL files.
+"""
 if __name__ == '__main__':
     remote = RemoteAnalyzer()
     for line in open('ql/e2e_java.txt', 'r'):
@@ -13,6 +16,3 @@ if __name__ == '__main__':
         except Exception as e:
             print('analyzer "{}" error as {}'.format(repo_name, e))
         # time.sleep(0.3)
-    ##
-    # repo_name = "zhuzhongshu/study_tars"
-    # remote.download_dataset(repo_name, 'csharp', '/home/rain/program/test', threshold=100)

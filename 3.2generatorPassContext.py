@@ -7,12 +7,6 @@ from sklearn.cluster import DBSCAN
 from context.contextClassifier import GAN
 
 
-def load_pkl(src):
-    with open(src,'rb') as f:
-        data = pickle.load(f)
-    return data
-
-
 def generator(num, train=True):
     padding_len = 16
     if train:
@@ -44,7 +38,10 @@ def generator(num, train=True):
 
 
 if __name__ == '__main__':
-    gen_pass_context = generator(5000, True)
+    """
+    GAN generator data
+    """
+    gen_pass_context = generator(10000, True)
     gen_pass_context = pd.DataFrame(gen_pass_context, columns=['context'])
     gen_pass_context = gen_pass_context.dropna()
     gen_pass_context.to_csv('raw_dataset/mycontext_pass_gen.csv', index=False)

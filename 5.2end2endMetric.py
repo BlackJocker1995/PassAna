@@ -82,8 +82,8 @@ def metric_java():
 
 if __name__ == '__main__':
 
-    # metric('checker')
+    metric('checker')
     # metric('finder')
     # metric_yelp()
-    metric_codeql()
+    # metric_codeql()
     # metric_java()

@@ -91,7 +91,7 @@ def generate_random_pass(num):
 def generate_random_token(num):
     tokens = []
     tmp_char = " ".join(string.ascii_letters + string.digits).split(' ')
-    for count in range(32, 64, 2):
+    for count in range(16, 64, 2):
         for i in range(num):
             tmp = np.random.choice(tmp_char, size=count, replace=True)
             token = ''.join(tmp)

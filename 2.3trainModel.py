@@ -3,12 +3,18 @@ import pickle
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
 
+from passwd.passFinderPass import PassFinderPassClassifier
 from passwd.pwdClassifier import HASHPwdClassifier, NgramPwdClassifier, FastTextPwdClassifier
 from tokenizer.tool import train_valid_split, load_pkl
 
 
 def pwdNgram():
+    """
+    train our credential classifier with n-gram
+    :return:
+    """
     X = load_pkl('./dataset/pwd_train_data.pkl').reshape(-1)
     Y = load_pkl('./dataset/pwd_train_label.pkl').reshape(-1)
 
@@ -28,26 +34,26 @@ def pwdNgram():
 
     ngramPwdClassifier.save_model('model/pass/model_my_glove_3.h5')
 
-def pwdNlp():
-    dataset = pd.read_csv('raw_dataset/rockyou.txt',
-                          delimiter="\n",
-                          header=None,
-                          names=["Passwords"],
-                          encoding="ISO-8859-1",
-                          nrows=1000
-                          )
 
-    X = dataset.to_numpy().reshape(-1).tolist()
-    Y = np.ones(len(dataset))
+def passFinder():
+    """
+    train model in passFinder
+    :return:
+    """
+    X = load_pkl('./dataset/pwd_train_data.pkl').reshape(-1)
+    Y = load_pkl('./dataset/pwd_train_label.pkl').reshape(-1)
 
-    fastTextPredictor = FastTextPwdClassifier(padding_len=128, class_num=3)
-    X, Y = fastTextPredictor.words2vec(X, Y, False)
-    train_data, valid_data = train_valid_split(X, Y)
+    passFinderClassifier = PassFinderPassClassifier(padding_len=128, class_num=3)
 
-    fastTextPredictor.create_model()
-    fastTextPredictor.run(train_data, valid_data, epochs=25, batch_size=64)
+    X, Y = passFinderClassifier.words2vec(X, Y, fit=True)
 
+    X, X_t, Y, Y_t = train_test_split(X, Y, stratify=Y, test_size=0.1)
 
+    train_data, valid_data = [X, np.array(Y, dtype=int)], [X_t, np.array(Y_t, dtype=int)]
+
+    passFinderClassifier.create_model()
+    passFinderClassifier.run(train_data, valid_data, epochs=50, batch_size=256)
+    passFinderClassifier.save_model('model/pass/model_passfinder_3.h5')
 
 
 if __name__ == '__main__':
