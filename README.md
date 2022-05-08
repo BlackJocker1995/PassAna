@@ -21,7 +21,7 @@ In `$project-home$`, use this script `for z in *.zip; do unzip $z && rm $z; done
 
 ## Running Introduction
 
-`1.anaStringLiterals`: find all string，输出为`pass.csv`
+`1.anaStringLiterals`: find all string，ouput `pass.csv`
 
 `2.3.trainModel`: train credential classifier 
 
