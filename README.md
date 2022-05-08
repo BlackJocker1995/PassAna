@@ -1,4 +1,4 @@
-# PassAna
+# Seagull
 
 ## Requirements
 System: tested on Ubuntu 18.04 and 20.04，
