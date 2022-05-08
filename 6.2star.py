@@ -5,7 +5,6 @@ import requests
 
 
 def get_stars_count(repo_name):
-    # repo_name = 'ZzzzzZXxxX/yolo3_keras_Flag_Detection'
     url = f'https://api.github.com/search/repositories?q=repo:{repo_name}'
     try:
         r = requests.get(url)
@@ -95,10 +94,3 @@ def statistics():
     merge_csv['test_label'] = test_label
 
     merge_csv.to_csv('metrics/project_star.csv', index=False)
-
-
-def dis():
-
-if __name__ == '__main__':
-    dis
-

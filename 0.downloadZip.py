@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
         try:
             remote.download_dataset(repo_name, 'java',
-                                    '/media/rain/data/e2e_java', threshold=500)
+                                    '', threshold=500)
         except Exception as e:
             print('analyzer "{}" error as {}'.format(repo_name, e))
         # time.sleep(0.3)
