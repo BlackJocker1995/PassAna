@@ -30,7 +30,7 @@ def pwdNgram():
     train_data, valid_data = train_valid_split(X, Y)
 
     ngramPwdClassifier.create_model()
-    ngramPwdClassifier.run(train_data, valid_data, epochs=50, batch_size=256)
+    ngramPwdClassifier.run(train_data, valid_data, epochs=50, batch_size=256, imbalance=False)
 
     ngramPwdClassifier.save_model('model/pass/model_my_glove_3.h5')
 

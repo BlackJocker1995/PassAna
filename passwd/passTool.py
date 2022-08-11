@@ -10,21 +10,21 @@ import scipy
 from scipy import stats
 from tqdm import tqdm
 import pandas as pd
-from password_generator import PasswordGenerator
+# from password_generator import PasswordGenerator
 
-class RandomPasGeneratorLocal(object):
-    def __init__(self):
-        self.pwo = PasswordGenerator()
-        self.pwo.maxlen=50
-
-    def generate(self):
-        return self.pwo.generate()
-
-    def generate_muil(self, num):
-        passwords = []
-        for i in tqdm(range(num)):
-            passwords.append(self.generate())
-        return pd.DataFrame(passwords)
+# class RandomPasGeneratorLocal(object):
+#     def __init__(self):
+#         self.pwo = PasswordGenerator()
+#         self.pwo.maxlen=50
+#
+#     def generate(self):
+#         return self.pwo.generate()
+#
+#     def generate_muil(self, num):
+#         passwords = []
+#         for i in tqdm(range(num)):
+#             passwords.append(self.generate())
+#         return pd.DataFrame(passwords)
 
 
 def _cal_entropy(text):
@@ -74,18 +74,18 @@ def process_found_pass(src, name='pass'):
     data.to_csv(f"{src}/{name}.csv")
 
 
-def generate_random_pass(num):
-    """
-    generate random password
-    :return:
-    """
-    passwords = []
-    pwo = PasswordGenerator()
-    pwo.maxlen = 20
-    for i in tqdm(range(num)):
-        passwords.append(pwo.generate())
-    passwords = pd.DataFrame(passwords)
-    passwords.to_csv("raw_dataset/random_pass.csv", index=False)
+# def generate_random_pass(num):
+#     """
+#     generate random password
+#     :return:
+#     """
+#     passwords = []
+#     pwo = PasswordGenerator()
+#     pwo.maxlen = 20
+#     for i in tqdm(range(num)):
+#         passwords.append(pwo.generate())
+#     passwords = pd.DataFrame(passwords)
+#     passwords.to_csv("raw_dataset/random_pass.csv", index=False)
 
 
 def generate_random_token(num):

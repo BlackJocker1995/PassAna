@@ -80,10 +80,26 @@ def metric_java():
     print(m)
 
 
+def metric_gitleak():
+    cad = pd.read_csv(f'e2e/gitleaker.csv')
+
+    Y = cad['raw_label'].to_numpy()
+    y_pred = cad['gitleak_label'].to_numpy()
+
+    matrix = confusion_matrix(Y, y_pred)
+    #draw_map(matrix, ['Ordinary', 'Password'])
+    #plt.show()
+    print(matrix)
+
+    m = classification_report(Y, y_pred, digits=4)
+    print(m)
+
+
 if __name__ == '__main__':
 
-    metric('checker')
+    # metric('checker')
     # metric('finder')
-    # metric_yelp()
-    # metric_codeql()
+    metric_yelp()
+    metric_gitleak()
+    #metric_codeql()
     # metric_java()

@@ -48,7 +48,7 @@ class PwdClassifier:
 
         if imbalance:
             tmp_y = np.argmax(train[1], axis=1)
-            weights = compute_class_weight(class_weight='balanced', classes=[0, 1], y=tmp_y)
+            weights = compute_class_weight(class_weight='balanced', classes=[0, 1, 2], y=tmp_y)
             self.model.fit(train[0], train[1],
                            epochs=epochs, batch_size=batch_size,
                            validation_data=(valid[0], valid[1]),

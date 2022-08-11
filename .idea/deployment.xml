@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="rain@10.0.0.151:22" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pycnpy" showAutoUploadSettingsWarning="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Codeql" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pycnpy" showAutoUploadSettingsWarning="false">
     <serverData>
+      <paths name="3090Server">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Codeql">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/rain/PassAna" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="Ubuntu20">
         <serverdata>
           <mappings>
@@ -9,24 +23,24 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="gonghuihui@172.26.178.149:22">
+      <paths name="rain@10.0.0.14:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/gonghuihui/pwd_proj/PassAna" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="rain@10.0.0.151:22">
+      <paths name="rain@cloud2.xdcnis.top:10022 password">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/rain/PassAna" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="rain@10.0.0.245:22">
+      <paths name="rain@cloud2.xdcnis.top:10022 password (1)">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/rain/PassAna" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
