@@ -9,6 +9,10 @@ Download LGTM data to local `$project-home$`
 
 In `$project-home$`, use this script `for z in *.zip; do unzip $z && rm $z; done` to unzip files.
 
+## Train Dataset
+The file is saved at "dataset"
+`pwd_data` is string data.
+
 ## Structure
 `context`: Flow Context Classifier
 
