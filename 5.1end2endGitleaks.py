@@ -135,7 +135,7 @@ def process_label():
     
 
 if __name__ == '__main__':
-    # check_files("/media/rain/data/test/")
+    check_files("/media/rain/data/test/")
     # merge_files("/media/rain/data/test/")
     # process_csv()
     process_label()
